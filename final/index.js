@@ -3,6 +3,8 @@ const http = require('http');
 const url = require('url');
 const replaceTemplate = require("./modules/replaceTemplate");
 
+const slugify = require('slugify');
+
 //---------------------SERVER----------------------
 
 const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
@@ -12,6 +14,9 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.htm
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObj = JSON.parse(data);
 
+// Use Slugify to change URL or our page to display user friendly text instead of "?id=0"
+const slugs = dataObj.map(el => slugify(el.productName))
+console.log(slugify('Fresh Avocado', {lower: true}));
 // -- Start Server-----------
   const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true);
