@@ -12,6 +12,13 @@ pipeline {
      NEW_VERSION = '1.3.0'
    }
     stages {
+      stage('init') {
+        steps {
+          script {
+            gv = load "script.groovy"
+          }
+        }
+      }
       stage('Build') {
         // Build only when branch name is 'main' && there is any code changes in repo. //
         when {
@@ -20,8 +27,9 @@ pipeline {
           }
         }
       steps {
-              echo 'Building...'
-              echo "Building version ${NEW_VERSION}"
+             script {
+               gv.buildApp()
+             }
       }
     }
     stage('Test') {
@@ -32,7 +40,9 @@ pipeline {
          }
        }
        steps {
-         echo 'Testing...'
+          script {
+               gv.testApp()
+             }
        }
     }
     stage('Deploy') {
@@ -42,10 +52,11 @@ pipeline {
         }
       }
       steps {
-        echo 'Deploying...'
-        echo "Deploying version number ${VERSION}"
-      }
-    } 
+
+        script {
+               gv.deployApp()
+        }
+      } 
   }
   post {
     always {
