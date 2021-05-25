@@ -43,7 +43,7 @@ pipeline {
       }
       steps {
         echo 'Deploying...'
-        echo "Deploying version ${VERSION}"
+        echo "Deploying version number ${VERSION}"
       }
     } 
   }
